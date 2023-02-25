@@ -35,7 +35,22 @@ def normalize(img, ceil=255):
         return img
     
 
-            
+def convolve2D(image, kernel):
+    kernel = np.flipud(np.fliplr(kernel))
+    kernel_height, kernel_width = kernel.shape
+    image_height, image_width = image.shape
+    assert(kernel_height == kernel_width and kernel_height%2!=0)
+    padding = int(kernel_height/2)
+    image_padded = np.zeros((image_height + padding*2, image_width + padding*2))
+    image_padded[padding:image_padded.shape[0]-padding, padding:image_padded.shape[1]-padding] = image 
+    print(image_padded)
+    output = np.zeros_like(image)
+    for i in range(image_height):
+        for j in range(image_width):
+            row_start, row_end = i, i+kernel_height
+            col_start, col_end = j, j+kernel_width
+            output[i][j] = (kernel * image_padded[row_start:row_end, col_start:col_end]).sum()
+    return output
     
     
     
