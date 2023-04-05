@@ -51,11 +51,13 @@ def convolve2D(image, kernel):
             col_start, col_end = j, j+kernel_width
             output[i][j] = (kernel * image_padded[row_start:row_end, col_start:col_end]).sum()
     return output
+
+
+def pad(img, padding=2, mode='zeros'):
+    padded = np.zeros((img.shape[0]+padding*2, img.shape[1]+padding*2), dtype=np.ubyte)
+    for i in range(img.shape[0]):
+        for j in range(img.shape[1]):
+            padded[i+padding][j+padding] = img[i][j]
+    return padded
     
-    
-    
-def print_info_2d(array):
-    print("Array info:\n\tSize:\t[{}, {}]\n\tMin:\t{}\n\tMax:\t{}\n\tSum:\t{}\n\tType:\t{}".format(array.shape[0], array.shape[1], array.min(), array.max(), array.sum(), array.dtype))
-    
-def print_info_1d(array):
-    print("Array info:\n\tSize:\t{}\n\tMin:\t{}\n\tMax:\t{}\n\tSum:\t{}\n\tType:\t{}".format(len(array), array.min(), array.max(), array.sum(), array.dtype))
+
